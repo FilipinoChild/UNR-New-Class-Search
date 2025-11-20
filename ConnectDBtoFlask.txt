@@ -1,0 +1,15 @@
+1.) cd flask-backend
+2.) create .env file there (next to app.py NOT inside venv folder)
+3.) add the line:
+    DATABASE_URL=<paste your postgresql:// from neon here>
+    NOTE:   paste that string WITHOUT psql '' 
+            ONLY paste whats INSIDE the single quotes
+done! 
+just run the app.py
+click the http:
+add /NCS_db to the end of the URL 
+should see:
+{
+  "db_time": "2025-11-20 21:06:01.259371+00:00",
+  "status": "success"
+}

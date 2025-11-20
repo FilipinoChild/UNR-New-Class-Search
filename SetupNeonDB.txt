@@ -8,6 +8,11 @@ Connect to database:
 6.) Done! connected to database
 
 Once Connected test out
-\l to list databases
-\h for commands
-\q quit
+\l  to list databases
+\h  for commands
+\dn view schemas
+\q  quit
+
+Work with a certain Schema: 
+1) SET search_path TO sales, public;
+2) SHOW search_path;
