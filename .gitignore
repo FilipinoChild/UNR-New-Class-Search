@@ -15,6 +15,12 @@ ENV/
 env.bak/
 venv.bak/
 #####################################################
+# React stuff:
+node_modules/
+# node_modules/ can easily be hundreds of MBs, which will bloat Git repo
+dist/
+
+######################################################
 
 # C extensions
 *.so
