@@ -1,0 +1,28 @@
+----------------------------------------------------------------
+Everyone One Time Setup:
+1.) cd client
+2.) npm install
+
+Working with React (running it):
+1.) cd client
+2.) npm run dev
+3.) just ctrl + c to quit and 
+    confirm y terminate batch job
+
+----------------------------------------------------------------
+Notes:
+React Projects are isolated -> Project isolation = node_modules/
+    Every project has its own node_modules/ folder inside the project directory.
+    All packages you install (npm install …) go only into that folder.
+
+No “activate” step like flask venv
+    1) Just cd into the project folder, 
+    2) adjust code files as needed
+    3) and then run scripts (npm run dev)
+Node auto uses packages in node_modules/ relative to the current project folder.
+
+Why lock files are important (package-lock.json)
+    ensures everyone gets the exact same versions of all dependencies
+    Without it, npm could install newer versions of packages -> inconsistencies
+
+----------------------------------------------------------------
