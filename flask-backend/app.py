@@ -3,6 +3,7 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 import psycopg2
+from config import Config
 
 load_dotenv()  # load variables from .env
 
@@ -16,7 +17,8 @@ def get_connection():
 @app.route("/NCS_db")
 def NCS_db():
     try:
-        conn = get_connection()
+        #conn = get_connection()
+        conn = psycopg2.connect(Config.get_db_url())
         cur = conn.cursor()
         cur.execute("SELECT NOW();")
         result = cur.fetchone()
