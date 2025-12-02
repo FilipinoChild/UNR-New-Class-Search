@@ -50,6 +50,7 @@ class Instructor:
             return Instructor(result[0], result[1], result[2])
         return None
     
+    @staticmethod
     def search_by_name(name_pattern):
         #Search instructors by name
         query = """

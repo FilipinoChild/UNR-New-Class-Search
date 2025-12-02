@@ -98,6 +98,15 @@ def get_instructors():
         return {"status": "success", "instructors": [i.format() for i in instructors]}
     except Exception as e:
         return {"status": "error", "message": str(e)}, 500
-     
+
+from models.term import Term
+@app.route("/terms")
+def get_terms():
+    try:
+        terms = Term.get_all()
+        return {"status": "success", "terms": [t.format() for t in terms]}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}, 500
+         
 if __name__ == "__main__":
     app.run(debug=True)
