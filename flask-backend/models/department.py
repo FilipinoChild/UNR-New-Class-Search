@@ -45,3 +45,10 @@ class Department:
         if result:
             return Department(result[0], result[1], result[2])
         return None
+    
+    #Magic Methods
+    def __str__(self):
+        return f"{self.department_code} - {self.college}"
+    
+    def __repr__(self):
+        return f"Department(id={self.id}, code='{self.department_code}')"

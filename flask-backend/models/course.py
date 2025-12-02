@@ -118,3 +118,22 @@ class Course:
                     units=result[6]
                 )
         return None
+    
+    #Magic methods
+    def __str__(self):
+        #String representation for users
+        return f"{self.subject} {self.catalog_num}: {self.title}"
+    
+    def __repr__(self):
+        #String representation for developers
+        return f"Course(id={self.id}, subject='{self.subject}', catalog_num={self.catalog_num})"
+    
+    def __eq__(self, other):
+        #Check equality based on course ID
+        if isinstance(other, Course):
+            return self.id == other.id
+        return False
+    
+    def __hash__(self):
+        #Make Course hashable (for use in sets/dicts)
+        return hash(self.id)

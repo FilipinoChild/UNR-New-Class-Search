@@ -89,6 +89,15 @@ def get_course_detail(course_id):
         }
     except Exception as e:
         return {"status": "error", "message": str(e)}, 500
-    
+
+from models.instructor import Instructor
+@app.route("/instructors")
+def get_instructors():
+    try:
+        instructors = Instructor.get_all()
+        return {"status": "success", "instructors": [i.format() for i in instructors]}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}, 500
+     
 if __name__ == "__main__":
     app.run(debug=True)
