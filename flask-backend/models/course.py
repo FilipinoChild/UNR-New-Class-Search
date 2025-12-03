@@ -1,5 +1,4 @@
 from dbconnect.connection import DatabaseConnection
-from models.department import Department
 
 class Course:
     #Represents a course with its specific information
@@ -50,6 +49,7 @@ class Course:
     #Lazy loading for related objects
     def get_department(self):
         if self._department is None:
+            from models.department import Department
             d = Department.get_by_id(self.department_id)
             self._department = d
         return self._department

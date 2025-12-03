@@ -107,6 +107,22 @@ def get_terms():
         return {"status": "success", "terms": [t.format() for t in terms]}
     except Exception as e:
         return {"status": "error", "message": str(e)}, 500
+
+from models.section import Section
+@app.route("/sections/<int:section_id>")
+def get_section_details(section_id):
+    try:
+        section = Section.get_by_id(section_id)
+        if not section:
+            return {"status": "error", "message": "Section not found"}, 404
+        
+        # Get all related data
+        return {
+            "status": "success",
+            "section": section.format(include_course=True, include_term=True, include_instructors=True)
+        }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}, 500
          
 if __name__ == "__main__":
     app.run(debug=True)
