@@ -3,6 +3,8 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 import os
 import psycopg2
+from config import Config
+from dbconnect.connection import DatabaseConnection
 
 load_dotenv()  # load variables from .env
 
@@ -16,12 +18,16 @@ def get_connection():
 @app.route("/NCS_db")
 def NCS_db():
     try:
-        conn = get_connection()
+        #conn = get_connection()
+        #conn = psycopg2.connect(Config.get_db_url())
+        '''
         cur = conn.cursor()
         cur.execute("SELECT NOW();")
         result = cur.fetchone()
         cur.close()
         conn.close()
+        '''
+        result = DatabaseConnection.execute_single("SELECT NOW();")
         return {"status": "success", "db_time": str(result[0])}
     except Exception as e:
         return {"status": "error", "message": str(e)}, 500
@@ -47,5 +53,76 @@ def get_courses():
     except Exception as e:
         return {"status": "error", "message": str(e)}, 500
 
+from models.department import Department
+@app.route("/departments")
+def get_departments():
+    try:
+        departments = Department.get_all()
+        return {"status": "success", "departments": [d.format() for d in departments]}
+    except Exception as e:
+        return {"status": "error", "mesasage": str(e)}, 500     
+
+from models.course import Course
+@app.route("/courses-test")
+def get_courses_test():
+    try:
+        courses = Course.get_all()
+        return {
+            "status": "success", 
+            "courses": [c.format() for c in courses],
+            "count": len(courses)
+        }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}, 500
+
+@app.route("/courses-test/<int:course_id>")
+def get_course_detail(course_id):
+    #Get detailed information about a specific course
+    try:
+        course = Course.get_by_id(course_id)
+        if not course:
+            return {"status": "error", "message": "Course not found"}, 404
+        
+        return {
+            "status": "success",
+            "course": course.format(include_department=True)
+        }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}, 500
+
+from models.instructor import Instructor
+@app.route("/instructors")
+def get_instructors():
+    try:
+        instructors = Instructor.get_all()
+        return {"status": "success", "instructors": [i.format() for i in instructors]}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}, 500
+
+from models.term import Term
+@app.route("/terms")
+def get_terms():
+    try:
+        terms = Term.get_all()
+        return {"status": "success", "terms": [t.format() for t in terms]}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}, 500
+
+from models.section import Section
+@app.route("/sections/<int:section_id>")
+def get_section_details(section_id):
+    try:
+        section = Section.get_by_id(section_id)
+        if not section:
+            return {"status": "error", "message": "Section not found"}, 404
+        
+        # Get all related data
+        return {
+            "status": "success",
+            "section": section.format(include_course=True, include_term=True, include_instructors=True)
+        }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}, 500
+         
 if __name__ == "__main__":
     app.run(debug=True)
