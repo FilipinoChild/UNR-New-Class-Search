@@ -4,8 +4,15 @@ import { Input } from "./ui/Input";
 import { Label } from "./ui/Label";
 import UNR_Logo from "../assets/UNR_Logo.svg"
 
+interface User {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+}
+
 interface LoginProps {
-  onLogin: () => void;
+  onLogin: (userData: User) => void;
   onNavigateToSignUp: () => void;
 }
 
@@ -16,7 +23,7 @@ export function Login({ onLogin, onNavigateToSignUp }: LoginProps) {
   const [csrfToken, setCsrfToken] = useState("");
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/csrf-token', {
+    fetch('http://localhost:5000/csrf-token', {
       credentials: 'include',
     })
       .then(response => response.json())
@@ -39,7 +46,7 @@ export function Login({ onLogin, onNavigateToSignUp }: LoginProps) {
       return;
     }
 
-    fetch('http://localhost:5000/api/login', {
+    fetch('http://localhost:5000/login', {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -59,8 +66,8 @@ export function Login({ onLogin, onNavigateToSignUp }: LoginProps) {
         }
         return response.json();
       })
-      .then(() => {
-        onLogin();
+      .then((data) => {
+        onLogin(data.user);
       })
       .catch((error: Error) => {
         setError(error.message || 'Login failed');

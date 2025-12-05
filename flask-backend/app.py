@@ -18,12 +18,12 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['SESSION_PROTECTION'] = 'strong'
 app.config['SESSION_COOKIE_HTTPONLY'] = True
-app.config['SESSION_COOKIE_SECURE'] = False
+app.config['SESSION_COOKIE_SECURE'] = False #Off During Development
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 csrf = CSRFProtect(app)
-CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 def get_connection():
@@ -67,7 +67,7 @@ def get_courses():
     except Exception as e:
         return {"status": "error", "message": str(e)}, 500
     
-@app.route('/api/csrf-token', methods=['GET'])
+@app.route('/csrf-token', methods=['GET'])
 def get_csrf_token():
     token = generate_csrf()
     return jsonify({'csrf_token': token})
@@ -98,7 +98,7 @@ def load_user(user_id):
     return None
 
     
-@app.route('/api/signup', methods=['POST'])
+@app.route('/signup', methods=['POST'])
 def signup():
     try:
         #Check if we are actually getting the data from react to flask
@@ -140,7 +140,7 @@ def signup():
         print(f"Error: {e}")
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/login', methods=['POST'])
+@app.route('/login', methods=['POST'])
 def login():
     try:
         #Check if we are actually getting the data from react to flask
@@ -190,24 +190,24 @@ def login():
         print(f"Error: {e}")
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/logout', methods=['POST'])
+@app.route('/logout', methods=['POST'])
 @login_required
 def logout():
-    print("AAAA")
     logout_user()
     print("Authenticated: " + str(current_user.is_authenticated))
-    print("ID: " + str(current_user.id))
-    print("Email: " + current_user.email)
-    print("First Name: " + current_user.first_name)
-    print("Last Name: " + current_user.last_name)
     return jsonify({'message': 'Logged out successfully'}), 200
 
-@app.route('/api/auth/status', methods=['GET'])
+@app.route('/auth/status', methods=['GET'])
 def auth_status():
     if current_user.is_authenticated:
         return jsonify({
             'authenticated': True,
-            'user': {'id': current_user.id, 'email': current_user.email}
+            'user': {
+                'id': current_user.id,
+                'email': current_user.email,
+                'first_name': current_user.first_name,
+                'last_name': current_user.last_name
+            }
         }), 200
     return jsonify({'authenticated': False}), 200
 

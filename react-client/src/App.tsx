@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { CourseCard } from "./components/CourseCard";
 import { SearchFilters } from "./components/SearchFilters";
 import { Sidebar } from "./components/Sidebar";
@@ -8,6 +8,13 @@ import { Programs } from "./components/Programs";
 import { Planner } from "./components/Planner";
 import { Login } from "./components/Login";
 import { SignUp } from "./components/SignUp"
+
+interface User {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+}
 
 interface Course {
   id: string;
@@ -289,6 +296,40 @@ export default function App() {
 // Authentication state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authView, setAuthView] = useState<"login" | "signup">("login");
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoadingAuth, setIsLoadingAuth] = useState(true);
+  const [csrfToken, setCsrfToken] = useState("");
+
+  useEffect(() => {
+    fetch('http://localhost:5000/csrf-token', {
+      credentials: 'include',
+    })
+      .then(response => response.json())
+      .then(data => setCsrfToken(data.csrf_token))
+      .catch(error => console.error('Failed to fetch CSRF token:', error));
+  }, []);
+
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/auth/status', {
+          credentials: 'include',
+        });
+        const data = await response.json();
+        
+        if (data.authenticated && data.user) {
+          setIsAuthenticated(true);
+          setUser(data.user);
+        }
+      } catch (error) {
+        console.error('Error checking auth status:', error);
+      } finally {
+        setIsLoadingAuth(false);
+      }
+    };
+
+    checkAuthStatus();
+  }, []);
 
   const [currentView, setCurrentView] = useState<"home" | "search" | "planner" | "programs" | "settings">("home");
   const [term, setTerm] = useState("Spring 2025");
@@ -440,20 +481,56 @@ export default function App() {
   );
 
   // Handle authentication
-  const handleLogin = () => {
+  const handleLogin = (userData: User) => {
     setIsAuthenticated(true);
+    setUser(userData);
     setCurrentView("home");
   };
 
-  const handleSignUp = () => {
-    setIsAuthenticated(true);
-    setCurrentView("home");
+  const handleSignUp = (userData: User) => {
+    //setIsAuthenticated(true);
+    //setUser(userData);
+    //setCurrentView("home");
+    setAuthView("login");
   };
 
   const handleLogout = () => {
-    setIsAuthenticated(false);
-    setAuthView("login");
+    fetch('http://localhost:5000/logout', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'X-CSRFToken': csrfToken
+      },
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Logout failed');
+        }
+        return response.json();
+      })
+      .then(() => {
+        console.log('Logged out successfully');
+        setIsAuthenticated(false);
+        setUser(null);
+        setAuthView("login");
+      })
+      .catch((error: Error) => {
+        console.error('Logout error:', error);
+
+        //Still log out on frontend even if backend fails
+        setIsAuthenticated(false);
+        setUser(null);
+        setAuthView("login");
+      });
   };
+
+  if (isLoadingAuth) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-slate-50">
+        <p className="text-slate-600">Loading...</p>
+      </div>
+    );
+  }
 
   // Show login/signup pages if not authenticated
   if (!isAuthenticated) {
@@ -475,7 +552,7 @@ export default function App() {
 
   return (
     <div className="flex min-h-screen bg-slate-50">
-      <Sidebar currentView={currentView} onNavigate={setCurrentView} onLogout={handleLogout} />
+      <Sidebar currentView={currentView} onNavigate={setCurrentView} onLogout={handleLogout} user={user} />
       
       <div className="flex-1">
         {currentView === "home" ? (
