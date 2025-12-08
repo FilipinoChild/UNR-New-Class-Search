@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 # ------------------ Extract ------------------
 def extract_excel(file_name):
-    df = pd.read_excel(file_name, header=1, nrows=100, index_col=None)
+    df = pd.read_excel(file_name, header=1, nrows=70, index_col=None)
 
     year_match = re.search(r'(\d{4})', file_name)
 
@@ -19,7 +19,7 @@ def extract_excel(file_name):
 
     return df
 
-df = extract_excel("Fall 2025 Master Schedule.xlsx")
+df = extract_excel("Fall 2025 Master Schedule - Copy.xlsx")
 
 # ------------------ Transform ------------------
 def float_to_time(value):

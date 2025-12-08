@@ -12,9 +12,15 @@ interface SidebarProps {
   currentView: "home" | "search" | "planner" | "programs" | "settings";
   onNavigate: (view: "home" | "search" | "planner" | "programs" | "settings") => void;
   onLogout: () => void;
+  user: {
+    id: number;
+    email: string;
+    first_name: string;
+    last_name: string;
+  } | null;
 }
 
-export function Sidebar({ currentView, onNavigate, onLogout }: SidebarProps) {
+export function Sidebar({ currentView, onNavigate, onLogout, user }: SidebarProps) {
   const navItems: NavItem[] = [
     { name: "Home", icon: Home, view: "home" },
     { name: "Search", icon: Search, view: "search" },
@@ -41,7 +47,9 @@ export function Sidebar({ currentView, onNavigate, onLogout }: SidebarProps) {
           </button>
           <div className="flex-1 min-w-0">
             {/* TO BE REPLACED WITH USER'S NAME */}
-            <p className="text-slate-900 truncate text-sm">John Smith</p>
+            <p className="text-slate-900 truncate text-sm">
+              {user ? `${user.first_name} ${user.last_name}` : 'Loading...'}
+            </p>
             <p className="text-xs text-slate-500 truncate">Student</p>
           </div>
         </div>
