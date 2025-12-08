@@ -291,6 +291,7 @@ def search_courses():
         
         # Add all possible filters from query parameters
         search.add_filter('subject', request.args.get('subject'))
+        search.add_filter('college', request.args.get('department'))
         search.add_filter('catalog_num', request.args.get('catalog_num'))
         search.add_filter('title', request.args.get('title'))
         search.add_filter('instructor', request.args.get('instructor'))

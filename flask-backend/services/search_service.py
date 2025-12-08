@@ -33,6 +33,7 @@ class SearchService:
                 i.id, i.first_name, i.last_name
             FROM section s
             JOIN course c ON s.course_id = c.id
+            JOIN department d ON c.department_id = d.id
             JOIN term t ON s.term_id = t.id
             LEFT JOIN section_instructor si ON s.id = si.section_id
             LEFT JOIN instructor i ON si.instructor_id = i.id
@@ -46,6 +47,11 @@ class SearchService:
             query += " AND c.subject = %s"
             params.append(self.filters['subject'])
         
+        if 'college' in self.filters:
+            query += " AND d.college = %s"
+            params.append(self.filters['college'])
+            print('test that this works')
+
         if 'catalog_num' in self.filters:
             query += " AND c.catalog_num = %s"
             params.append(self.filters['catalog_num'])
@@ -101,6 +107,7 @@ class SearchService:
         # Order results
         query += " ORDER BY c.subject, c.catalog_num, s.section_num;"
         
+        print(query)
         return query, params
     
     def execute_search(self):

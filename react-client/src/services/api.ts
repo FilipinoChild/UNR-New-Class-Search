@@ -13,6 +13,7 @@ export interface SearchParams {
   instruction_mode?: string;
   component?: string;
   status?: string;
+  department?: string;
 }
 
 export interface Section {

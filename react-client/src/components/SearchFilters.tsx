@@ -26,8 +26,8 @@ interface SearchFiltersProps {
   setTerm: (term: string) => void;
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  subject: string;
-  setSubject: (subject: string) => void;
+  department: string;
+  setDepartment: (subject: string) => void;
   courseNumber: string;
   setCourseNumber: (courseNumber: string) => void;
   courseCareer: string;
@@ -53,8 +53,8 @@ export function SearchFilters({
   setTerm,
   searchQuery,
   setSearchQuery,
-  subject,
-  setSubject,
+  department,
+  setDepartment,
   courseNumber,
   setCourseNumber,
   courseCareer,
@@ -168,12 +168,12 @@ export function SearchFilters({
               </Select>
             </div>
 
-            {/* Subject */}
+            {/* Department */}
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <Label htmlFor="subject" className="text-slate-700 flex items-center gap-2">
+                <Label htmlFor="department" className="text-slate-700 flex items-center gap-2">
                   <BookOpen className="w-4 h-4 text-[#003366]" />
-                  Subject
+                  Department
                 </Label>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -182,18 +182,18 @@ export function SearchFilters({
                     </button>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
-                    <p>Filter courses by academic department or subject area</p>
+                    <p>Filter courses by academic department/specific college</p>
                   </TooltipContent>
                 </Tooltip>
               </div>
-              <Select value={subject} onValueChange={setSubject}>
-                <SelectTrigger id="subject" className="border-slate-300">
-                  <SelectValue placeholder="All Subjects" />
+              <Select value={department} onValueChange={setDepartment}>
+                <SelectTrigger id="department" className="border-slate-300">
+                  <SelectValue placeholder="All Departments" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Subjects</SelectItem>
+                  <SelectItem value="all">All Departments</SelectItem>
                   {departments.map(dept => (
-                    <SelectItem key={dept.id} value={dept.department_code}>
+                    <SelectItem key={dept.id} value={dept.college}>
                       {dept.college}
                     </SelectItem>
                   ))}

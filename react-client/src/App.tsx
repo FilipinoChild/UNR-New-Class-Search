@@ -341,7 +341,7 @@ export default function App() {
   const [currentView, setCurrentView] = useState<"home" | "search" | "planner" | "programs" | "settings">("home");
   const [term, setTerm] = useState("Spring 2025");
   const [searchQuery, setSearchQuery] = useState("");
-  const [subject, setSubject] = useState("all");
+  const [department, setDepartment] = useState("all");
   const [courseNumber, setCourseNumber] = useState("");
   const [courseCareer, setCourseCareer] = useState("all");
   const [showOpenOnly, setShowOpenOnly] = useState(false);
@@ -355,7 +355,7 @@ export default function App() {
   const [appliedFilters, setAppliedFilters] = useState({
     term: "Spring 2025",
     searchQuery: "",
-    subject: "all",
+    department: "all",
     courseNumber: "",
     courseCareer: "all",
     showOpenOnly: false,
@@ -470,9 +470,9 @@ export default function App() {
         }
       }
       
-      // === SUBJECT DROPDOWN ===
-      if (subject && subject !== 'all') {
-        searchParams.subject = subject;
+      // === DEPARTMENT DROPDOWN ===
+      if (department && department !== 'all') {
+        searchParams.department = department;
       }
       
       // === COURSE NUMBER INPUT ===
@@ -600,7 +600,7 @@ export default function App() {
   const handleReset = () => {
     setTerm("Spring 2025");
     setSearchQuery("");
-    setSubject("all");
+    setDepartment("all");
     setCourseNumber("");
     setCourseCareer("all");
     setShowOpenOnly(false);
@@ -612,7 +612,7 @@ export default function App() {
     setAppliedFilters({
       term: "Spring 2025",
       searchQuery: "",
-      subject: "all",
+      department: "all",
       courseNumber: "",
       courseCareer: "all",
       showOpenOnly: false,
@@ -739,8 +739,8 @@ export default function App() {
               setTerm={setTerm}
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
-              subject={subject}
-              setSubject={setSubject}
+              department={department}
+              setDepartment={setDepartment}
               courseNumber={courseNumber}
               setCourseNumber={setCourseNumber}
               courseCareer={courseCareer}
