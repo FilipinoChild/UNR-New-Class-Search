@@ -314,6 +314,33 @@ function formatTime(timeString: string | null): string {
   return `${hour12}:${minute} ${period}`;
 }
 
+// Helper function to determine course level from catalog number
+function getCourseLevel(catalogNum: number): string {
+  if (catalogNum >= 500) return '600+ Level';
+  if (catalogNum >= 400) return '400 Level';
+  if (catalogNum >= 300) return '300 Level';
+  if (catalogNum >= 200) return '200 Level';
+  if (catalogNum >= 100) return '100 Level';
+  return 'Other';
+}
+
+// Helper function to determine course career from catalog number
+function getCourseCareer(catalogNum: number): string {
+  if (catalogNum >= 600) return 'Graduate';  // If your school uses 600+ for med
+  return 'Undergraduate';
+}
+
+// Helper function to format instruction mode
+function formatInstructionMode(mode: string): string {
+  const modeMap: Record<string, string> = {
+    'P': 'In Person',
+    'HY': 'Hybrid',
+    'WL': 'Synchronous Online',
+    'WA': 'Asynchronous Online',
+  };
+  return modeMap[mode] || mode;
+}
+
 export default function App() {
 // Authentication state
   console.log("App component rendering"); // ADD THIS
@@ -794,12 +821,12 @@ export default function App() {
                         enrolled={0}
                         capacity={100}
                         location={section.room || 'TBA'}
-                        department={section.course_code.split(' ')[0]}
+                        department={section.course_code.split(' ')[0]}//{section.department}
                         component={section.component}
                         section={section.section_num}
-                        level="100-Level"
-                        courseCareer="Undergraduate"
-                        modeOfInstruction="In Person"
+                        level={getCourseLevel(section.catalog_num)}
+                        courseCareer={getCourseCareer(section.catalog_num)}
+                        modeOfInstruction={formatInstructionMode(section.instruction_mode)}
                         isInPlanner={plannedCourseIds.has(section.section_id.toString())}
                         onAddToPlanner={handleAddToPlanner}
                         showPlannerButton={true}

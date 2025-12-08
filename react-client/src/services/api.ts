@@ -31,7 +31,10 @@ export interface Section {
   instructor: string;
   status: string;
   room: string | null;
-  component: string
+  component: string;
+  instruction_mode: string;
+  catalog_num: number;
+  //department: string;
 }
 
 export interface SectionDetails {

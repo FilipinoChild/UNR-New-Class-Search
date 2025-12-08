@@ -221,7 +221,11 @@ class SearchService:
                 "units": s.get_course().units,
                 "instructor": s.get_instructors()[0].get_full_name() if s.get_instructors() else "TBA",
                 "status": s.class_status,
-                "room": s.room_code
+                "room": s.room_code,
+                "component": s.component,
+                "instruction_mode": s.instruction_mode,
+                "catalog_num": s.get_course().catalog_num
+                #"department": s.get_course().get_department().college
             }
             for s in self.results
         ]
