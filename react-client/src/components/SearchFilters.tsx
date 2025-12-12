@@ -13,7 +13,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/Tooltip";
-import { Search, Calendar, BookOpen, Hash, GraduationCap, Monitor, Filter, RotateCcw, HelpCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { Search, Calendar, BookOpen, MapPin, GraduationCap, Monitor, Filter, RotateCcw, HelpCircle, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { courseAPI } from "../services/api";
@@ -25,8 +25,8 @@ interface SearchFiltersProps {
   setSearchQuery: (query: string) => void;
   department: string;
   setDepartment: (subject: string) => void;
-  courseNumber: string;
-  setCourseNumber: (courseNumber: string) => void;
+  roomSearch: string;
+  setRoomSearch: (courseNumber: string) => void;
   courseCareer: string;
   setCourseCareer: (career: string) => void;
   showOpenOnly: boolean;
@@ -52,8 +52,8 @@ export function SearchFilters({
   setSearchQuery,
   department,
   setDepartment,
-  courseNumber,
-  setCourseNumber,
+  roomSearch,
+  setRoomSearch,
   courseCareer,
   setCourseCareer,
   showOpenOnly,
@@ -199,12 +199,12 @@ export function SearchFilters({
               </Select>
             </div>
 
-            {/* Course Number */}
+            {/* Room/Building */}
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <Label htmlFor="courseNumber" className="text-slate-700 flex items-center gap-2">
-                  <Hash className="w-4 h-4 text-[#003366]" />
-                  Course Number
+                <Label htmlFor="roomSearch" className="text-slate-700 flex items-center gap-2">
+                  <MapPin className="w-4 h-4 text-[#003366]" />
+                  Room/Building
                 </Label>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -213,15 +213,15 @@ export function SearchFilters({
                     </button>
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
-                    <p>Filter by specific course number (e.g., 101, 200, 305)</p>
+                    <p>Search by building code (e.g., AB) or room number (e.g., AB 135)</p>
                   </TooltipContent>
                 </Tooltip>
               </div>
               <Input
-                id="courseNumber"
-                placeholder="e.g., 101, 200..."
-                value={courseNumber}
-                onChange={(e) => setCourseNumber(e.target.value)}
+                id="roomSearch"
+                placeholder="e.g., AB, AB 135, SEM 234..."
+                value={roomSearch}
+                onChange={(e) => setRoomSearch(e.target.value)}
                 className="border-slate-300 focus:border-[#003366] focus:ring-[#003366]"
               />
             </div>

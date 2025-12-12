@@ -389,7 +389,7 @@ export default function App() {
   const [term, setTerm] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [department, setDepartment] = useState("all");
-  const [courseNumber, setCourseNumber] = useState("");
+  const [roomSearch, setRoomSearch] = useState("");
   const [courseCareer, setCourseCareer] = useState("all");
   const [showOpenOnly, setShowOpenOnly] = useState(false);
   const [modeOfInstruction, setModeOfInstruction] = useState("all");
@@ -403,7 +403,7 @@ export default function App() {
     term: "Spring 2025",
     searchQuery: "",
     department: "all",
-    courseNumber: "",
+    roomSearch: "",
     courseCareer: "all",
     showOpenOnly: false,
     modeOfInstruction: "all",
@@ -508,9 +508,8 @@ export default function App() {
       }
       
       // === COURSE NUMBER INPUT ===
-      if (courseNumber) {
-        searchParams.catalog_num = courseNumber;
-        searchParams.catalog_num_operator = 'exact';
+      if (roomSearch && roomSearch.trim() !== '') {
+        searchParams.room = roomSearch;
       }
       
       // === DAYS BUTTONS ===
@@ -632,7 +631,7 @@ export default function App() {
     setTerm("all");
     setSearchQuery("");
     setDepartment("all");
-    setCourseNumber("");
+    setRoomSearch("");
     setCourseCareer("all");
     setShowOpenOnly(false);
     setModeOfInstruction("all");
@@ -644,7 +643,7 @@ export default function App() {
       term: "all",
       searchQuery: "",
       department: "all",
-      courseNumber: "",
+      roomSearch: "",
       courseCareer: "all",
       showOpenOnly: false,
       modeOfInstruction: "all",
@@ -772,8 +771,8 @@ export default function App() {
               setSearchQuery={setSearchQuery}
               department={department}
               setDepartment={setDepartment}
-              courseNumber={courseNumber}
-              setCourseNumber={setCourseNumber}
+              roomSearch={roomSearch}
+              setRoomSearch={setRoomSearch}
               courseCareer={courseCareer}
               setCourseCareer={setCourseCareer}
               showOpenOnly={showOpenOnly}
